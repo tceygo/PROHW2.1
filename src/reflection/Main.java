@@ -1,5 +1,6 @@
 package reflection;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.PublicKey;
 
@@ -16,7 +17,14 @@ public class Main {
         for (Method method: methods){
             if(method.isAnnotationPresent(Testa.class)){
                 Testa an = method.getAnnotation(Testa.class);
-                a.test1( an.ab(), an.ba());
+                //a.test1( an.ab(), an.ba());
+                try {
+                   method.invoke(a, an.ab(), an.ba());
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                } catch (InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                }
 
             }
         }
